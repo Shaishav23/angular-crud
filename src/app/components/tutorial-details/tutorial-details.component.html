@@ -1,0 +1,58 @@
+<div *ngIf="viewMode; else editable">
+  <div *ngIf="currentTutorial.id">
+    <h4>Tutorial</h4>
+    <div>
+      <label><b>Title: </b></label> {{ currentTutorial.title }}
+    </div>
+    <div>
+      <label><b>Description: </b></label>
+      {{ currentTutorial.description }}
+    </div>
+    <div>
+      <label><b>Status: </b></label> {{ currentTutorial.published? "Published": "Pending" }}
+    </div>
+    <a class="badge bg-warning" routerLink="/tutorials/{{ currentTutorial.id }}"> Edit </a>
+  </div>
+  <div *ngIf="!currentTutorial">
+  <br>
+  <p>Please Click on a Tutorial</p>
+  </div>
+</div>
+
+<ng-template #editable>
+  <div *ngIf="currentTutorial?.id" class="edit-form">
+    <h4>Tutorial</h4>
+    <form>
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" name="title" id="title" class="form-control" [(ngModel)]="currentTutorial.title">
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <input type="text" name="description" id="description" class="form-control" [(ngModel)]="currentTutorial.description">
+      </div>
+      <div class="form-group">
+        <label><b>Status: </b></label>
+        {{ currentTutorial.published ? "Published" : "Pending"}}
+      </div>
+    </form>
+    <button class="badge bg-primary mr-2" *ngIf="currentTutorial.published" (click)="updatePublished(false)">
+      UnPublish
+    </button>
+    <button class="badge bg-primary mr-2" *ngIf="!currentTutorial.published" (click)="updatePublished(true)">
+      Publish
+    </button>
+    <button class="badge bg-danger mr-2" (click)="deleteTutorial()">
+      Delete
+    </button>
+    <button class="badge bg-success mr-2" (click)="updateTutorial()">
+      Update
+    </button>
+    <br>
+    {{ message }}
+  </div>
+  <div *ngIf="!currentTutorial.id">
+    <br>
+    <p>Cannot access the tutorial</p>
+  </div>
+</ng-template>
