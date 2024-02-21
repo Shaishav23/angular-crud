@@ -2,58 +2,57 @@ import { Component, OnInit } from '@angular/core';
 import { Tutorial } from 'src/app/models/tutorial.model';
 import { TutorialService } from 'src/app/services/tutorial.service';
 
-
 @Component({
   selector: 'app-tutorials-list',
   templateUrl: './tutorials-list.component.html',
-  styleUrls: ['./tutorials-list.component.css']
+  styleUrls: ['./tutorials-list.component.css'],
 })
-export class TutorialsListComponent implements OnInit{
+export class TutorialsListComponent implements OnInit {
   tutorials?: Tutorial[];
   currentTutorial: Tutorial = {};
   currentIndex = -1;
   title = '';
-  constructor(private tutorialService: TutorialService){}
+  constructor(private tutorialService: TutorialService) {}
   ngOnInit(): void {
     this.retriveTutorials();
   }
-  retriveTutorials():void{
+  retriveTutorials(): void {
     this.tutorialService.getAll().subscribe({
-      next: (data) =>{
+      next: (data) => {
         this.tutorials = data;
         console.log(data);
       },
-      error:(e) => console.error(e)
+      error: (e) => console.error(e),
     });
   }
-  refreshList():void{
+  refreshList(): void {
     this.retriveTutorials();
     this.currentIndex = -1;
     this.currentTutorial = {};
   }
-  setActiveTutorial(tutorial: Tutorial, index: number):void{
+  setActiveTutorial(tutorial: Tutorial, index: number): void {
     this.currentTutorial = tutorial;
     this.currentIndex = index;
     console.log('Current Tutorial:', this.currentTutorial);
   }
-  removeAllTutorials():void{
+  removeAllTutorials(): void {
     this.tutorialService.deleteAll().subscribe({
-      next:(res) => {
+      next: (res) => {
         console.log(res);
         this.refreshList();
       },
-      error:(e) => console.error(e)
+      error: (e) => console.error(e),
     });
   }
-  searchTitle():void{
+  searchTitle(): void {
     this.currentTutorial = {};
     this.currentIndex = -1;
     this.tutorialService.findByTitle(this.title).subscribe({
-      next: (data) =>{
+      next: (data) => {
         this.tutorials = data;
         console.log(data);
-        },
-        error:(e)=> console.error(e)
+      },
+      error: (e) => console.error(e),
     });
   }
 }
